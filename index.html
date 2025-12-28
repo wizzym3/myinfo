@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wizzy | Web & Telegram Bot Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .ambient-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: pulse 8s infinite ease-in-out;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(
+                circle at center,
+                rgba(147, 51, 234, 0.9) 0%,
+                rgba(147, 51, 234, 0.6) 30%,
+                rgba(147, 51, 234, 0.2) 60%,
+                transparent 80%
+            );
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(
+                circle at center,
+                rgba(139, 92, 246, 0.8) 0%,
+                rgba(139, 92, 246, 0.5) 30%,
+                rgba(139, 92, 246, 0.1) 60%,
+                transparent 80%
+            );
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 1.5s;
+        }
+
+        .orb-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(
+                circle at center,
+                rgba(217, 70, 239, 0.7) 0%,
+                rgba(217, 70, 239, 0.4) 30%,
+                rgba(217, 70, 239, 0.1) 60%,
+                transparent 80%
+            );
+            top: 40%;
+            left: 60%;
+            animation-delay: 3s;
+        }
+
+        .orb-4 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(
+                circle at center,
+                rgba(99, 102, 241, 0.6) 0%,
+                rgba(99, 102, 241, 0.3) 30%,
+                rgba(99, 102, 241, 0.05) 60%,
+                transparent 80%
+            );
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .meow-corner {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .meow-corner:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .centered-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 20px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .vertical-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 500px;
+            width: 100%;
+            pointer-events: auto;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid rgba(168, 85, 247, 0.6);
+            object-fit: cover;
+            animation: float 4s infinite ease-in-out;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4),
+                        0 0 50px rgba(168, 85, 247, 0.2);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+        }
+
+        .avatar:hover {
+            border-color: rgba(168, 85, 247, 0.9);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.6),
+                        0 0 70px rgba(168, 85, 247, 0.3);
+            animation-duration: 3s;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at center,
+                rgba(168, 85, 247, 0.3) 0%,
+                transparent 70%
+            );
+            filter: blur(5px);
+            z-index: -1;
+            animation: float 4s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .avatar.loading {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .avatar.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .bio {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            max-width: 400px;
+            text-align: center;
+            pointer-events: auto;
+        }
+
+        .bio-separator {
+            color: rgba(168, 85, 247, 0.6);
+            margin: 0 10px;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -1.2px;
+            line-height: 1;
+            text-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            pointer-events: auto;
+            margin-top: 10px;
+        }
+
+        .macos-window {
+            width: 100%;
+            max-width: 540px;
+            background: rgba(30, 15, 50, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(168, 85, 247, 0.1),
+                0 0 30px rgba(168, 85, 247, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin: 10px 0;
+            pointer-events: auto;
+        }
+
+        .macos-window:hover {
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(168, 85, 247, 0.15),
+                0 0 40px rgba(168, 85, 247, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 18px;
+            left: 18px;
+        }
+
+        .traffic-light {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .traffic-light.close {
+            background: #ff5f56;
+            border: 1px solid #e0443e;
+        }
+
+        .traffic-light.minimize {
+            background: #ffbd2e;
+            border: 1px solid #dea123;
+        }
+
+        .traffic-light.maximize {
+            background: #27ca3f;
+            border: 1px solid #1aab29;
+        }
+
+        .traffic-light:hover {
+            transform: scale(1.15);
+            filter: brightness(1.1);
+        }
+
+        .window-content {
+            margin-top: 15px;
+            padding-top: 5px;
+        }
+
+        .window-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(90deg, #d8b4fe, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .about-me-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .about-me-section p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0;
+            text-align: center;
+        }
+
+        .glass-buttons-row {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px 0;
+            pointer-events: auto;
+        }
+
+        .glass-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            pointer-events: auto;
+        }
+
+        .glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg,
+                rgba(168, 85, 247, 0) 0%,
+                rgba(168, 85, 247, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .glass-button:hover {
+            transform: scale(1.15) translateY(-5px);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.3),
+                        0 0 30px rgba(168, 85, 247, 0.2);
+            color: #ffffff;
+        }
+
+        .glass-button:hover::before {
+            opacity: 1;
+        }
+
+        .telegram-button {
+            background: rgba(0, 136, 204, 0.1);
+            border-color: rgba(0, 136, 204, 0.2);
+        }
+
+        .telegram-button:hover {
+            background: rgba(0, 136, 204, 0.2);
+            border-color: rgba(0, 136, 204, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.3),
+                        0 0 30px rgba(0, 136, 204, 0.2);
+        }
+
+        .buttons-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            pointer-events: auto;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3.2rem;
+            }
+
+            .bio {
+                font-size: 1rem;
+                max-width: 320px;
+            }
+
+            .macos-window {
+                max-width: 480px;
+                padding: 20px;
+            }
+
+            .window-title {
+                font-size: 1.3rem;
+            }
+
+            .about-me-section p {
+                font-size: 1rem;
+            }
+
+            .avatar {
+                width: 90px;
+                height: 90px;
+            }
+
+            .glass-button {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+            }
+
+            .glass-buttons-row {
+                gap: 16px;
+            }
+
+            .orb-1, .orb-2, .orb-3, .orb-4 {
+                transform: scale(0.7);
+            }
+
+            .meow-corner {
+                top: 25px;
+                left: 25px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.6rem;
+            }
+
+            .bio {
+                font-size: 0.95rem;
+                max-width: 280px;
+            }
+
+            .macos-window {
+                max-width: 340px;
+                padding: 18px;
+            }
+
+            .window-controls {
+                top: 15px;
+                left: 15px;
+            }
+
+            .traffic-light {
+                width: 12px;
+                height: 12px;
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .glass-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+
+            .glass-buttons-row {
+                gap: 14px;
+            }
+
+            .meow-corner {
+                top: 20px;
+                left: 20px;
+                font-size: 1rem;
+            }
+
+            .orb-1, .orb-2, .orb-3, .orb-4 {
+                transform: scale(0.5);
+            }
+
+            .vertical-stack {
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .title {
+                font-size: 2.2rem;
+            }
+
+            .macos-window {
+                max-width: 300px;
+                padding: 15px;
+            }
+
+            .glass-buttons-row {
+                gap: 12px;
+            }
+
+            .glass-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="meow-corner">Meow</div>
+
+    <div class="ambient-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <div class="centered-container">
+        <div class="vertical-stack">
+            <div class="avatar-container">
+                <div class="avatar-glow"></div>
+                <img src="https://i.pinimg.com/736x/97/1f/cc/971fcc4d0a347e1f3da269282e5ddc85.jpg"
+                     alt="wizzy avatar"
+                     class="avatar"
+                     id="avatar">
+            </div>
+
+            <p class="bio">
+                Fullstack Developer
+                <span class="bio-separator">|</span>
+                Telegram Bot Architect
+            </p>
+
+            <h1 class="title">wizzy</h1>
+
+            <div class="macos-window">
+                <div class="window-controls">
+                    <div class="traffic-light close"></div>
+                    <div class="traffic-light minimize"></div>
+                    <div class="traffic-light maximize"></div>
+                </div>
+
+                <div class="window-content">
+                    <h3 class="window-title">System Info: wizzy</h3>
+
+                    <div class="about-me-section">
+                        <p>A passionate Web & Telegram Bot Developer creating seamless digital experiences. Specializing in Python, JavaScript, and high-performance automation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons-label">Connect</div>
+
+            <div class="glass-buttons-row">
+                <a href="https://t.me/veblavka" target="_blank" class="glass-button telegram-button">
+                    <i class="fab fa-telegram"></i>
+                </a>
+
+                <a href="https://github.com" target="_blank" class="glass-button">
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="https://discord.com" target="_blank" class="glass-button">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+
+            <div class="footer">
+                Crafting digital experiences • 2024
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatar = document.getElementById('avatar');
+            const elements = document.querySelectorAll('.vertical-stack > *');
+
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 150 * index);
+            });
+
+            avatar.addEventListener('load', () => {
+                avatar.style.opacity = '1';
+                avatar.style.transform = 'scale(1)';
+            });
+
+            avatar.style.opacity = '0';
+            avatar.style.transform = 'scale(0.8)';
+            avatar.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+
+            if (avatar.complete) {
+                avatar.style.opacity = '1';
+                avatar.style.transform = 'scale(1)';
+            }
+
+            let time = 0;
+            function updateOrbs() {
+                time += 0.01;
+                const orbs = document.querySelectorAll('.orb');
+
+                orbs.forEach((orb, index) => {
+                    const opacityVariation = 0.1 * Math.sin(time + index);
+                    orb.style.opacity = `${0.7 + opacityVariation}`;
+                });
+
+                requestAnimationFrame(updateOrbs);
+            }
+
+            updateOrbs();
+
+            const glassButtons = document.querySelectorAll('.glass-button');
+
+            glassButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);
+                        transform: scale(0);
+                        animation: rippleExpand 0.5s ease-out;
+                        width: ${size * 2}px;
+                        height: ${size * 2}px;
+                        top: 50%;
+                        left: 50%;
+                        margin-top: -${size}px;
+                        margin-left: -${size}px;
+                        pointer-events: none;
+                        z-index: -1;
+                    `;
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        if (ripple.parentNode === this) {
+                            this.removeChild(ripple);
+                        }
+                    }, 500);
+                });
+            });
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rippleExpand {
+                    0% {
+                        transform: scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: scale(1);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            avatar.addEventListener('mouseenter', () => {
+                avatar.style.animationPlayState = 'paused';
+            });
+
+            avatar.addEventListener('mouseleave', () => {
+                avatar.style.animationPlayState = 'running';
+            });
+
+            avatar.addEventListener('click', () => {
+                avatar.style.animation = 'none';
+                void avatar.offsetWidth;
+                avatar.style.animation = `float ${Math.random() * 2 + 2}s infinite ease-in-out`;
+            });
+
+            const meowElement = document.querySelector('.meow-corner');
+            meowElement.addEventListener('click', () => {
+                meowElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    meowElement.style.transform = 'scale(1)';
+                }, 200);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                const orbs = document.querySelectorAll('.orb');
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+
+                orbs.forEach((orb, index) => {
+                    const sensitivity = [0.015, 0.02, 0.01, 0.025][index];
+                    const moveX = (mouseX - 0.5) * sensitivity * 100;
+                    const moveY = (mouseY - 0.5) * sensitivity * 100;
+
+                    const currentTransform = orb.style.transform || '';
+                    orb.style.transform = `translate(${moveX}px, ${moveY}px)${currentTransform.replace(/translate\([^)]*\)/, '')}`;
+                });
+            });
+
+            document.querySelectorAll('.traffic-light').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.classList.contains('close')) {
+                        const window = document.querySelector('.macos-window');
+                        window.style.transform = 'scale(0.95)';
+                        window.style.opacity = '0';
+
+                        setTimeout(() => {
+                            window.style.display = 'none';
+                            setTimeout(() => {
+                                window.style.display = 'block';
+                                setTimeout(() => {
+                                    window.style.transform = 'scale(1)';
+                                    window.style.opacity = '1';
+                                }, 10);
+                            }, 3000);
+                        }, 300);
+                    }
+                    else if (this.classList.contains('minimize')) {
+                        const window = document.querySelector('.macos-window');
+                        window.style.transform = 'scale(0.8) translateY(20px)';
+                        window.style.opacity = '0.6';
+
+                        setTimeout(() => {
+                            window.style.transform = 'scale(1) translateY(0)';
+                            window.style.opacity = '1';
+                        }, 1000);
+                    }
+                    else if (this.classList.contains('maximize')) {
+                        const window = document.querySelector('.macos-window');
+                        const originalWidth = window.style.width;
+                        window.style.width = '95%';
+                        window.style.maxWidth = '95%';
+
+                        setTimeout(() => {
+                            window.style.width = originalWidth;
+                            window.style.maxWidth = '540px';
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
